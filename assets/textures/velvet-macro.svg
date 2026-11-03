@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="100%" height="100%">
+  <rect width="300" height="300" fill="#3A1828" />
+  <defs>
+    <pattern id="weavePattern" width="20" height="20" patternUnits="userSpaceOnUse">
+      <rect width="20" height="20" fill="#3A1828" />
+      <line x1="0" y1="4" x2="20" y2="4" stroke="rgba(200, 162, 97, 0.35)" stroke-width="2.5" />
+      <line x1="0" y1="12" x2="20" y2="12" stroke="rgba(200, 162, 97, 0.35)" stroke-width="2.5" />
+      <line x1="4" y1="0" x2="4" y2="20" stroke="rgba(255, 255, 255, 0.22)" stroke-width="2.5" />
+      <line x1="12" y1="0" x2="12" y2="20" stroke="rgba(255, 255, 255, 0.22)" stroke-width="2.5" />
+      <!-- Slub / Texture Nodes -->
+      <circle cx="8" cy="8" r="1.5" fill="rgba(255,255,255,0.4)" />
+      <circle cx="16" cy="16" r="1.5" fill="rgba(255,255,255,0.4)" />
+    </pattern>
+  </defs>
+  <rect width="300" height="300" fill="url(#weavePattern)" />
+  <!-- Realistic Diagonal Sheen / Light Reflection -->
+  <linearGradient id="macroSheen" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="rgba(255,255,255,0.18)" />
+    <stop offset="45%" stop-color="rgba(255,255,255,0)" />
+    <stop offset="70%" stop-color="rgba(0,0,0,0.18)" />
+    <stop offset="100%" stop-color="rgba(255,255,255,0.22)" />
+  </linearGradient>
+  <rect width="300" height="300" fill="url(#macroSheen)" />
+</svg>

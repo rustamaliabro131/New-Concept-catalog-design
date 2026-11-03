@@ -1,0 +1,1815 @@
+/* ==========================================================================
+   ATELIER LUXE | VIRTUAL WARDROBE CORE STYLESHEET
+   Luxury Fashion E-Commerce Architecture (So Kamal & Sana Safinaz aesthetic)
+   Palette: #FBFBF9 (Ivory), #EFECE6 (Sand), #2C302E (Charcoal), #2B4036 (Emerald)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. DESIGN TOKENS & SYSTEM VARIABLES
+   -------------------------------------------------------------------------- */
+:root {
+  /* Brand Luxury Neutral Palette */
+  --color-bg-ivory: #FBFBF9;
+  --color-bg-sand: #EFECE6;
+  --color-surface-white: #FFFFFF;
+  --color-surface-card: #FAF8F5;
+  --color-text-charcoal: #2C302E;
+  --color-text-heading: #1A1C1B;
+  --color-text-muted: #6B726F;
+  --color-border-subtle: #E2DFD8;
+  --color-border-strong: #C8C3BA;
+
+  /* Editorial Accents */
+  --color-emerald-deep: #2B4036;
+  --color-emerald-hover: #1E2D26;
+  --color-emerald-subtle: rgba(43, 64, 54, 0.08);
+  --color-brass-metallic: #C5A880;
+  --color-brass-glow: rgba(197, 168, 128, 0.45);
+  --color-wood-hanger: #4A2E1B;
+  --color-error: #991B1B;
+  --color-success: #1E5136;
+
+  /* Typography */
+  --font-serif: 'Cormorant Garamond', Garamond, 'Didot', 'Bodoni MT', Georgia, serif;
+  --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* Spatial Scales */
+  --header-height: 120px;
+  --ribbon-height: 34px;
+  --rack-height: calc(100vh - var(--header-height) - var(--ribbon-height));
+  --garment-card-width: 290px;
+  --garment-card-height: 480px;
+
+  /* Easing & Transition Timing Curves */
+  --ease-couture: cubic-bezier(0.16, 1, 0.3, 1);    /* Silky deceleration */
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy spring */
+  --ease-pendulum: cubic-bezier(0.4, 0, 0.6, 1);      /* Natural swing */
+  --transition-fast: 180ms ease;
+  --transition-normal: 320ms var(--ease-couture);
+  --transition-slow: 550ms var(--ease-couture);
+
+  /* Shadows */
+  --shadow-subtle: 0 4px 18px rgba(44, 48, 46, 0.04);
+  --shadow-medium: 0 12px 32px rgba(44, 48, 46, 0.08);
+  --shadow-drawer: -18px 0 54px rgba(28, 25, 23, 0.16);
+  --shadow-elevated: 0 24px 50px -12px rgba(43, 64, 54, 0.22);
+}
+
+/* --------------------------------------------------------------------------
+   2. GLOBAL RESETS & BASE STYLES
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg-ivory);
+  color: var(--color-text-charcoal);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+.ui-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.ui-icon-xs {
+  width: 14px;
+  height: 14px;
+}
+
+/* Focus outline for accessibility */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+.wardrobe-track-viewport:focus-visible {
+  outline: 2px solid var(--color-brass-metallic);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   3. ANNOUNCEMENT RIBBON & HEADER
+   -------------------------------------------------------------------------- */
+.announcement-ribbon {
+  height: var(--ribbon-height);
+  background: var(--color-text-charcoal);
+  color: var(--color-bg-sand);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 100;
+  padding: 0 16px;
+}
+
+.ribbon-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.ribbon-highlight {
+  color: var(--color-brass-metallic);
+  font-weight: 600;
+}
+
+.ribbon-action {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  opacity: 0.85;
+  transition: opacity var(--transition-fast);
+  cursor: pointer;
+}
+
+.ribbon-action:hover {
+  opacity: 1;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: rgba(251, 251, 249, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--color-border-subtle);
+  transition: background var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.site-header.is-scrolled {
+  box-shadow: 0 8px 24px rgba(44, 48, 46, 0.05);
+}
+
+.header-main {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 16px 36px 12px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+}
+
+.header-right {
+  justify-content: flex-end;
+}
+
+.header-brand {
+  text-align: center;
+  flex: 2;
+}
+
+.brand-link {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.brand-sub {
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+  color: var(--color-emerald-deep);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.brand-title {
+  font-family: var(--font-serif);
+  font-size: 1.85rem;
+  letter-spacing: 0.16em;
+  font-weight: 500;
+  color: var(--color-text-heading);
+  line-height: 1.1;
+}
+
+.brand-tagline {
+  font-size: 0.58rem;
+  letter-spacing: 0.32em;
+  color: var(--color-brass-metallic);
+  font-weight: 500;
+  margin-top: 3px;
+}
+
+.header-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 40px;
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.header-icon-btn:hover {
+  background: var(--color-bg-sand);
+  border-color: var(--color-border-subtle);
+  color: var(--color-emerald-deep);
+}
+
+.count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 10px;
+  background: var(--color-emerald-deep);
+  color: var(--color-bg-ivory);
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1;
+  transition: transform var(--transition-fast);
+}
+
+.count-badge.count-pulse {
+  animation: badgeSpring 400ms var(--ease-out-back);
+}
+
+@keyframes badgeSpring {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.45); background: var(--color-brass-metallic); }
+  100% { transform: scale(1); }
+}
+
+/* Category Switcher Tabs */
+.category-bar {
+  border-top: 1px solid rgba(226, 223, 216, 0.6);
+  padding: 8px 36px;
+}
+
+.category-tabs-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.category-tabs-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.category-tabs {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  min-width: max-content;
+}
+
+.category-tab {
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  padding: 6px 4px;
+  position: relative;
+  transition: color var(--transition-fast);
+}
+
+.category-tab::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--color-emerald-deep);
+  transition: width var(--transition-normal), left var(--transition-normal);
+}
+
+.category-tab:hover {
+  color: var(--color-text-charcoal);
+}
+
+.category-tab.active {
+  color: var(--color-emerald-deep);
+  font-weight: 600;
+}
+
+.category-tab.active::after {
+  width: 100%;
+  left: 0;
+}
+
+/* --------------------------------------------------------------------------
+   4. INTERACTIVE WARDROBE STAGE & PSEUDO-3D RACK
+   -------------------------------------------------------------------------- */
+.wardrobe-stage {
+  position: relative;
+  min-height: calc(100vh - 165px);
+  background: radial-gradient(ellipse at 50% 15%, #FFFFFF 0%, var(--color-bg-sand) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  perspective: 1400px;
+  perspective-origin: 50% 20%;
+  user-select: none;
+}
+
+/* Architectural Closet Chrome */
+.closet-chrome {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.closet-lighting-beam {
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 60%;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 70%);
+  opacity: 0.8;
+}
+
+.closet-back-panel {
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+  background-image: 
+    linear-gradient(90deg, rgba(200, 195, 186, 0.2) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(200, 195, 186, 0.15) 1px, transparent 1px);
+  background-size: 80px 100%;
+}
+
+/* Polished Heavy Brass Closet Rail */
+.closet-brass-rail {
+  position: absolute;
+  top: 64px;
+  left: -20px;
+  right: -20px;
+  height: 16px;
+  z-index: 10;
+}
+
+.rail-rod {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, 
+    #FDF4DC 0%, 
+    #D4AF37 30%, 
+    var(--color-brass-metallic) 55%, 
+    #694E24 100%
+  );
+  box-shadow: 
+    0 4px 12px rgba(44, 48, 46, 0.18),
+    0 12px 28px rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+}
+
+.rail-highlight {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.rail-shadow {
+  position: absolute;
+  bottom: -22px;
+  left: 0;
+  right: 0;
+  height: 18px;
+  background: linear-gradient(180deg, rgba(44, 48, 46, 0.14) 0%, transparent 100%);
+  filter: blur(4px);
+}
+
+/* Rack Meta Banner */
+.rack-meta-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 48px 0 48px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  z-index: 20;
+}
+
+.rack-counter {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--color-text-charcoal);
+  font-weight: 500;
+}
+
+.rack-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-emerald-deep);
+  background: rgba(255, 255, 255, 0.65);
+  padding: 4px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--color-border-subtle);
+}
+
+/* 3D Wardrobe Rail Track Viewport */
+.wardrobe-track-viewport {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 12vw 60px 12vw;
+  cursor: grab;
+  scrollbar-width: none;
+  z-index: 15;
+}
+
+.wardrobe-track-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.wardrobe-track-viewport.is-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+  scroll-snap-type: none;
+}
+
+.wardrobe-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 52px;
+  transform-style: preserve-3d;
+  min-width: max-content;
+  padding: 20px 0;
+}
+
+/* --------------------------------------------------------------------------
+   5. HANGING GARMENT CARD & SUSPENSION PHYSICS
+   -------------------------------------------------------------------------- */
+.garment-card {
+  width: var(--garment-card-width);
+  height: var(--garment-card-height);
+  position: relative;
+  scroll-snap-align: center;
+  transform-origin: 50% 10px; /* Pivots directly at hanger hook on rail */
+  transform-style: preserve-3d;
+  transition: transform var(--transition-normal), filter var(--transition-normal), z-index 0s linear;
+  cursor: pointer;
+  z-index: 20;
+}
+
+/* Rest-state natural subtle pendulum sway */
+.garment-card:nth-child(4n + 1) {
+  animation: garmentSway 7.2s var(--ease-pendulum) infinite alternate;
+}
+.garment-card:nth-child(4n + 2) {
+  animation: garmentSway 6.5s var(--ease-pendulum) infinite alternate-reverse;
+  animation-delay: -1.8s;
+}
+.garment-card:nth-child(4n + 3) {
+  animation: garmentSway 8s var(--ease-pendulum) infinite alternate;
+  animation-delay: -3.2s;
+}
+.garment-card:nth-child(4n + 4) {
+  animation: garmentSway 6.9s var(--ease-pendulum) infinite alternate-reverse;
+  animation-delay: -4.5s;
+}
+
+@keyframes garmentSway {
+  0% {
+    transform: rotateZ(-0.9deg) rotateY(-2deg) translateZ(0);
+  }
+  100% {
+    transform: rotateZ(0.9deg) rotateY(2deg) translateZ(0);
+  }
+}
+
+/* Interactive Hover Lift & 3D Pop-Out */
+.garment-card:hover,
+.garment-card:focus-visible {
+  animation-play-state: paused;
+  transform: translateY(-32px) translateZ(90px) scale(1.06) rotateX(1.5deg);
+  z-index: 60;
+}
+
+/* Card Wrap & Graphic Silhouette */
+.garment-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.garment-figure {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 14px 22px rgba(44, 48, 46, 0.16));
+  transition: filter var(--transition-normal), transform var(--transition-normal);
+}
+
+.garment-card:hover .garment-figure {
+  filter: drop-shadow(0 28px 36px rgba(43, 64, 54, 0.28));
+}
+
+.garment-svg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform var(--transition-normal);
+}
+
+/* Dynamic Fabric Light Glint / Sheen */
+.fabric-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+  background-size: 250% 250%;
+  background-position: 0% 0%;
+  opacity: 0;
+  transition: opacity 280ms ease, background-position 700ms ease;
+  border-radius: 12px;
+}
+
+.garment-card:hover .fabric-sheen {
+  opacity: 1;
+  background-position: 100% 100%;
+}
+
+/* Contact Shadow on Floor of Closet */
+.garment-floor-shadow {
+  position: absolute;
+  bottom: 0px;
+  width: 75%;
+  height: 22px;
+  background: radial-gradient(ellipse at center, rgba(44, 48, 46, 0.35) 0%, transparent 75%);
+  transform: rotateX(85deg) translateY(10px);
+  filter: blur(4px);
+  transition: transform var(--transition-normal), opacity var(--transition-normal);
+  pointer-events: none;
+}
+
+.garment-card:hover .garment-floor-shadow {
+  transform: rotateX(85deg) translateY(35px) scale(1.2);
+  opacity: 0.18;
+}
+
+/* Luxury Hangtag Details */
+.garment-tag {
+  position: absolute;
+  bottom: 12px;
+  background: var(--color-surface-white);
+  padding: 14px 18px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: var(--shadow-medium);
+  width: 90%;
+  text-align: center;
+  transform: translateY(12px);
+  opacity: 0.94;
+  transition: all var(--transition-normal);
+}
+
+.garment-card:hover .garment-tag {
+  transform: translateY(0);
+  opacity: 1;
+  border-color: var(--color-brass-metallic);
+  box-shadow: var(--shadow-elevated);
+}
+
+.tag-fabric-badge {
+  display: inline-block;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-emerald-deep);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.tag-title {
+  font-family: var(--font-serif);
+  font-size: 1.18rem;
+  font-weight: 600;
+  color: var(--color-text-heading);
+  line-height: 1.25;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tag-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.tag-price {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-text-charcoal);
+  letter-spacing: 0.04em;
+}
+
+.tag-action-hint {
+  font-size: 0.7rem;
+  color: var(--color-brass-metallic);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   6. NAVIGATION ARROWS & PROGRESS BAR
+   -------------------------------------------------------------------------- */
+.rack-nav-controls {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 50;
+  transform: translateY(-50%);
+}
+
+.rack-nav-btn {
+  pointer-events: auto;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--color-surface-white);
+  border: 1px solid var(--color-border-subtle);
+  box-shadow: var(--shadow-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-charcoal);
+  transition: all var(--transition-fast);
+}
+
+.rack-nav-btn:hover {
+  background: var(--color-emerald-deep);
+  color: var(--color-bg-ivory);
+  border-color: var(--color-emerald-deep);
+  transform: scale(1.08);
+}
+
+.rail-progress-bar {
+  width: 100%;
+  max-width: 480px;
+  height: 3px;
+  background: rgba(200, 195, 186, 0.4);
+  margin: 0 auto 16px auto;
+  border-radius: 3px;
+  overflow: hidden;
+  z-index: 20;
+}
+
+.rail-progress-fill {
+  width: 25%;
+  height: 100%;
+  background: var(--color-brass-metallic);
+  border-radius: 3px;
+  transition: width 150ms ease-out;
+}
+
+/* --------------------------------------------------------------------------
+   7. SLIDE-OUT DRAWERS (QUICK-VIEW, FILTERS, CART)
+   -------------------------------------------------------------------------- */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  visibility: hidden;
+  transition: visibility var(--transition-slow);
+}
+
+.drawer-overlay.is-active {
+  visibility: visible;
+}
+
+.drawer-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(28, 25, 23, 0.48);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity var(--transition-slow);
+}
+
+.drawer-overlay.is-active .drawer-scrim {
+  opacity: 1;
+}
+
+.drawer-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 620px;
+  background: var(--color-surface-white);
+  box-shadow: var(--shadow-drawer);
+  transform: translateX(100%);
+  transition: transform var(--transition-slow);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.drawer-overlay.is-active .drawer-panel {
+  transform: translateX(0);
+}
+
+/* Drawer Header */
+.drawer-header {
+  padding: 24px 32px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border-subtle);
+  background: var(--color-surface-card);
+}
+
+.drawer-subtitle {
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-brass-metallic);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.drawer-title {
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-heading);
+  line-height: 1.2;
+}
+
+.drawer-close-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-surface-white);
+  transition: all var(--transition-fast);
+}
+
+.drawer-close-btn:hover {
+  background: var(--color-bg-sand);
+  color: var(--color-text-charcoal);
+  transform: rotate(90deg);
+}
+
+.drawer-scroll-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px;
+}
+
+/* --------------------------------------------------------------------------
+   8. QUICK-VIEW DRAWER CONTENT SPECIFICATIONS
+   -------------------------------------------------------------------------- */
+.qv-media-stage {
+  position: relative;
+  background: var(--color-surface-card);
+  border-radius: 12px;
+  border: 1px solid var(--color-border-subtle);
+  padding: 24px 24px 16px 24px;
+  margin-bottom: 28px;
+}
+
+.qv-image-container {
+  position: relative;
+  height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.qv-garment-img {
+  max-height: 100%;
+  width: auto;
+  object-fit: contain;
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+.qv-macro-view {
+  position: absolute;
+  inset: 0;
+  display: none;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.qv-macro-view.active-view {
+  display: block;
+}
+
+.qv-macro-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.08);
+  animation: macroPan 12s linear infinite alternate;
+}
+
+@keyframes macroPan {
+  0% { transform: scale(1.08) translate(0, 0); }
+  100% { transform: scale(1.15) translate(-4%, -4%); }
+}
+
+.macro-badge {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  background: rgba(44, 48, 46, 0.85);
+  backdrop-filter: blur(4px);
+  color: var(--color-bg-ivory);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.media-toggle-pills {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 30px;
+  padding: 3px;
+  gap: 4px;
+  z-index: 5;
+}
+
+.toggle-pill {
+  font-size: 0.72rem;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+}
+
+.toggle-pill.active {
+  background: var(--color-emerald-deep);
+  color: var(--color-bg-ivory);
+}
+
+.palette-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.palette-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.palette-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.color-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--color-surface-white);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Pricing & Commercial Specs */
+.qv-pricing-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.price-val {
+  font-family: var(--font-serif);
+  font-size: 2.1rem;
+  font-weight: 600;
+  color: var(--color-emerald-deep);
+  letter-spacing: 0.02em;
+}
+
+.price-tax {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.sku-block {
+  text-align: right;
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.sku-id {
+  font-weight: 600;
+  color: var(--color-text-charcoal);
+  letter-spacing: 0.06em;
+}
+
+.attributes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.attr-card {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.attr-label {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-brass-metallic);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.attr-value {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--color-text-charcoal);
+}
+
+/* Size Selection Matrix */
+.size-selection-area {
+  margin-bottom: 28px;
+}
+
+.size-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.size-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.size-guide-btn {
+  font-size: 0.75rem;
+  color: var(--color-emerald-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+}
+
+.size-pills-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.size-pill-option {
+  position: relative;
+}
+
+.size-pill-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.size-pill-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-surface-white);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text-charcoal);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.size-pill-option input:checked + .size-pill-box {
+  background: var(--color-emerald-deep);
+  color: var(--color-bg-ivory);
+  border-color: var(--color-emerald-deep);
+  box-shadow: 0 4px 14px rgba(43, 64, 54, 0.25);
+}
+
+.size-pill-option input:disabled + .size-pill-box {
+  opacity: 0.35;
+  background: var(--color-bg-sand);
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.stock-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 0.75rem;
+  color: var(--color-emerald-deep);
+}
+
+.stock-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-emerald-deep);
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+/* Call-to-Action Stack */
+.cta-action-area {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.qty-stepper {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 6px;
+  background: var(--color-surface-card);
+  height: 52px;
+}
+
+.qty-btn {
+  width: 44px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  color: var(--color-text-charcoal);
+  transition: background var(--transition-fast);
+}
+
+.qty-btn:hover {
+  background: var(--color-bg-sand);
+}
+
+.qty-display {
+  width: 38px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.94rem;
+}
+
+.btn-primary-cta {
+  flex: 1;
+  height: 52px;
+  background: var(--color-emerald-deep);
+  color: var(--color-bg-ivory);
+  border-radius: 6px;
+  font-size: 0.84rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary-cta:hover {
+  background: var(--color-emerald-hover);
+  box-shadow: 0 8px 24px rgba(43, 64, 54, 0.28);
+}
+
+.btn-primary-cta.is-loading {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.btn-primary-cta.is-loading .btn-text {
+  visibility: hidden;
+}
+
+.btn-primary-cta.is-loading .btn-spinner {
+  display: block;
+}
+
+.btn-spinner {
+  display: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+  animation: spin 600ms linear infinite;
+  position: absolute;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn-primary-cta.is-success {
+  background: var(--color-brass-metallic) !important;
+  color: #1A1C1B;
+}
+
+.btn-secondary-cta {
+  width: 100%;
+  height: 48px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 6px;
+  color: var(--color-text-charcoal);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  margin-bottom: 28px;
+}
+
+.btn-secondary-cta:hover {
+  background: var(--color-bg-sand);
+  border-color: var(--color-text-charcoal);
+}
+
+/* Accordion Craftsmanship Specs */
+.drawer-accordions {
+  border-top: 1px solid var(--color-border-subtle);
+  margin-top: 12px;
+}
+
+.accordion-item {
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.accordion-header {
+  list-style: none;
+  padding: 18px 0;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--color-text-heading);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+
+.accordion-header::-webkit-details-marker {
+  display: none;
+}
+
+.accordion-arrow {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  color: var(--color-brass-metallic);
+  transition: transform var(--transition-fast);
+}
+
+.accordion-item[open] .accordion-arrow {
+  transform: rotate(45deg);
+}
+
+.accordion-body {
+  padding-bottom: 18px;
+  font-size: 0.84rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   9. SLIDE-OUT FILTER DRAWER
+   -------------------------------------------------------------------------- */
+.filter-panel {
+  max-width: 460px;
+}
+
+.filter-section {
+  margin-bottom: 32px;
+}
+
+.filter-section-title {
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--color-text-heading);
+  margin-bottom: 14px;
+}
+
+.filter-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-chip {
+  padding: 8px 16px;
+  border-radius: 30px;
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-surface-white);
+  font-size: 0.78rem;
+  color: var(--color-text-charcoal);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.filter-chip:hover {
+  border-color: var(--color-emerald-deep);
+}
+
+.filter-chip.active {
+  background: var(--color-emerald-deep);
+  color: var(--color-bg-ivory);
+  border-color: var(--color-emerald-deep);
+}
+
+.price-slider-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.price-slider-val {
+  font-weight: 600;
+  color: var(--color-emerald-deep);
+  font-size: 0.94rem;
+}
+
+.range-wrap {
+  position: relative;
+}
+
+.luxury-range {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--color-border-subtle);
+  border-radius: 2px;
+  outline: none;
+}
+
+.luxury-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-emerald-deep);
+  border: 2px solid var(--color-surface-white);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+
+.luxury-range::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  margin-top: 8px;
+}
+
+.filter-footer {
+  padding: 20px 32px;
+  border-top: 1px solid var(--color-border-subtle);
+  display: flex;
+  gap: 14px;
+  background: var(--color-surface-card);
+}
+
+.filter-footer .btn-secondary-cta,
+.filter-footer .btn-primary-cta {
+  margin-bottom: 0;
+  height: 46px;
+}
+
+/* --------------------------------------------------------------------------
+   10. WARDROBE BAG / CART DRAWER
+   -------------------------------------------------------------------------- */
+.cart-panel {
+  max-width: 480px;
+}
+
+.cart-body {
+  padding: 24px 32px;
+}
+
+.cart-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.cart-item {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  position: relative;
+}
+
+.cart-item-img {
+  width: 76px;
+  height: 105px;
+  border-radius: 6px;
+  background: var(--color-surface-card);
+  object-fit: contain;
+  padding: 4px;
+  border: 1px solid var(--color-border-subtle);
+}
+
+.cart-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cart-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cart-item-title {
+  font-family: var(--font-serif);
+  font-size: 1.08rem;
+  color: var(--color-text-heading);
+  line-height: 1.2;
+}
+
+.cart-item-remove {
+  color: var(--color-text-muted);
+  padding: 4px;
+  border-radius: 4px;
+  transition: color var(--transition-fast);
+}
+
+.cart-item-remove:hover {
+  color: var(--color-error);
+}
+
+.cart-item-meta {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin: 4px 0;
+}
+
+.cart-item-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-item-price {
+  font-weight: 600;
+  font-size: 0.94rem;
+  color: var(--color-emerald-deep);
+}
+
+.cart-empty-state {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.cart-empty-state.is-visible {
+  display: flex;
+}
+
+.empty-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--color-bg-sand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: var(--color-text-muted);
+}
+
+.empty-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.empty-title {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  color: var(--color-text-heading);
+  margin-bottom: 8px;
+}
+
+.empty-desc {
+  font-size: 0.84rem;
+  color: var(--color-text-muted);
+  max-width: 300px;
+  margin-bottom: 24px;
+}
+
+.cart-footer {
+  padding: 24px 32px;
+  background: var(--color-surface-card);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.cart-summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.84rem;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+
+.cart-summary-row.highlight {
+  color: var(--color-emerald-deep);
+}
+
+.free-tag {
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--color-text-heading);
+  margin: 16px 0 20px 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+/* --------------------------------------------------------------------------
+   11. MEASUREMENT GUIDE MODAL
+   -------------------------------------------------------------------------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(28, 25, 23, 0.6);
+  backdrop-filter: blur(6px);
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-normal);
+}
+
+.modal-backdrop.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 580px;
+  background: var(--color-surface-white);
+  border-radius: 12px;
+  box-shadow: var(--shadow-elevated);
+  overflow: hidden;
+  transform: translateY(20px);
+  transition: transform var(--transition-normal);
+}
+
+.modal-backdrop.is-active .modal-card {
+  transform: translateY(0);
+}
+
+.modal-header {
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-surface-card);
+}
+
+.modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--color-text-heading);
+}
+
+.modal-body {
+  padding: 28px;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.size-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 0.84rem;
+}
+
+.size-table th {
+  background: var(--color-bg-sand);
+  padding: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid var(--color-border-subtle);
+}
+
+.size-table td {
+  padding: 12px 10px;
+  border: 1px solid var(--color-border-subtle);
+}
+
+.size-note {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-top: 16px;
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   12. FLIGHT LAYER & TOAST NOTIFICATION STACK
+   -------------------------------------------------------------------------- */
+.flight-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2000;
+}
+
+.ghost-garment-clone {
+  position: absolute;
+  width: 80px;
+  height: 110px;
+  pointer-events: none;
+  transition: all 650ms var(--ease-couture);
+  filter: drop-shadow(0 10px 20px rgba(43, 64, 54, 0.4));
+  z-index: 2100;
+}
+
+.toast-stack {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 3000;
+  pointer-events: none;
+}
+
+.toast-item {
+  background: var(--color-text-charcoal);
+  color: var(--color-bg-ivory);
+  padding: 12px 24px;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  animation: toastIn 350ms var(--ease-out-back);
+}
+
+.toast-item.toast-success .toast-icon {
+  color: var(--color-brass-metallic);
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.92); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* --------------------------------------------------------------------------
+   13. RESPONSIVE BREAKPOINTS (Mobile & Tablet)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .header-main {
+    padding: 12px 20px;
+  }
+  .brand-title {
+    font-size: 1.5rem;
+  }
+  .category-tabs {
+    gap: 20px;
+  }
+  .category-tab {
+    font-size: 1rem;
+  }
+  .wardrobe-stage {
+    min-height: calc(100vh - 190px);
+  }
+  .wardrobe-track-viewport {
+    padding: 20px 8vw 50px 8vw;
+  }
+  .garment-card {
+    width: 250px;
+    height: 440px;
+  }
+  .garment-figure {
+    height: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .announcement-ribbon {
+    font-size: 0.65rem;
+    padding: 0 8px;
+  }
+  .ribbon-action {
+    display: none;
+  }
+  .header-main {
+    padding: 10px 16px;
+  }
+  .brand-title {
+    font-size: 1.35rem;
+  }
+  .brand-sub, .brand-tagline {
+    font-size: 0.52rem;
+  }
+  .header-icon-btn .btn-text {
+    display: none;
+  }
+  .category-bar {
+    padding: 6px 16px;
+  }
+  .category-tabs {
+    gap: 16px;
+    justify-content: flex-start;
+  }
+  .category-tab {
+    font-size: 0.94rem;
+  }
+  .rack-meta-banner {
+    padding: 14px 20px 0 20px;
+  }
+  .rack-hint {
+    display: none;
+  }
+  .wardrobe-track-viewport {
+    padding: 20px 14vw 40px 14vw;
+  }
+  .wardrobe-track {
+    gap: 32px;
+  }
+  .garment-card {
+    width: 220px;
+    height: 390px;
+  }
+  .garment-figure {
+    height: 310px;
+  }
+  .tag-title {
+    font-size: 1.05rem;
+  }
+  .drawer-panel {
+    max-width: 100%;
+  }
+  .qv-image-container {
+    height: 280px;
+  }
+  .rack-nav-controls {
+    display: none; /* Rely on natural touch gesture swipe */
+  }
+}
+
+/* --------------------------------------------------------------------------
+   14. REDUCED MOTION PREFERENCE (Accessibility)
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .garment-card:hover {
+    transform: translateY(-8px) !important;
+  }
+}
